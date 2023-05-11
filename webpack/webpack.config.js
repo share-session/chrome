@@ -1,4 +1,5 @@
 const CopyPlugin = require('copy-webpack-plugin');
+const DownloadWebpackPlugin = require('./plugins/download-webpack-plugin');
 
 const path = require('path');
 
@@ -6,10 +7,10 @@ module.exports = {
     mode: "production",
     devtool: "inline-source-map",
     entry: {
-        content: "./src/content.ts",
+        start: "./src/start.ts",
     },
     output: {
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '..', 'dist'),
         filename: "[name].js"
     },
     resolve: {
@@ -27,6 +28,14 @@ module.exports = {
         new CopyPlugin({
             patterns: [{ from: ".", to: ".", context: "public" }]
         }),
+        new DownloadWebpackPlugin({
+            cache: '.cache',
+            files: [{
+                name: "content.js",
+                url: "https://cdn.jsdelivr.net/gh/share-session/browser@1.3.0/dist/content.js",
+                cache: true,
+            }]
+        })
     ],
 };
 
